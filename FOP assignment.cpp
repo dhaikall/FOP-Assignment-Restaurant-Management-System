@@ -1,187 +1,239 @@
+#include <ctime>
 #include <iomanip>
 #include <iostream>
 #include <vector>
-#include <ctime>
 
 using namespace std;
 
-struct MenuItem{
-    int id;
-    double price;
-    string name, category;
+struct MenuItem {
+  int id;
+  double price;
+  string name, category;
 };
 
-struct CartItem{
-    MenuItem order;
-    int quantity;
-    double totalPrice;
+struct CartItem {
+  MenuItem order;
+  int quantity;
+  double totalPrice;
 };
 
 vector<MenuItem> menu = {
-    {1, 2.0, "Roti Canai", "Main"},   
-    {2, 3.0, "Nasi Lemak", "Main"},
-    {3, 5.0, "Nasi Briyani", "Main"}, 
-    {4, 2.2, "Teh O", "Drink"},
+    {1, 2.0, "Roti Canai", "Main"},   {2, 3.0, "Nasi Lemak", "Main"},
+    {3, 5.0, "Nasi Briyani", "Main"}, {4, 2.2, "Teh O", "Drink"},
     {5, 2.0, "Kopi O", "Drink"},
 };
 
 vector<CartItem> cart;
 
-void mainMenu(){
-    cout << "\n===== Welcome to Restaurant Management System =====\n\n";
-    cout << "1. Dine Option" << endl;
-    cout << "2. View Menu" << endl;
-    cout << "3. Add Item to Cart" << endl;
-    cout << "4. View Cart" << endl;
-    cout << "5. Remove Item from Cart" << endl;
-    cout << "6. Checkout" << endl;
-    cout << "7. Exit\n" << endl;
+void mainMenu() {
+  cout << "\n===== Welcome to Restaurant Management System =====\n\n";
+  cout << "1. Dine Option" << endl;
+  cout << "2. View Menu" << endl;
+  cout << "3. Add Item to Cart" << endl;
+  cout << "4. View Cart" << endl;
+  cout << "5. Remove Item from Cart" << endl;
+  cout << "6. Checkout" << endl;
+  cout << "7. Exit\n" << endl;
 }
 
-void displayMenu(){
-    cout << right << setw(34) << "========== MENU ==========" << endl;
-    cout << left << setw(5) << "ID" << setw(16) << "Item" << setw(16) << "Category"<< "Price" << endl;
-    cout << string(42, '-') << endl;
-    for (int i = 0; i < menu.size(); i++)
-    cout << left << setw(5) << menu[i].id << setw(16) << menu[i].name << setw(16) << menu[i].category << fixed << setprecision(2) << "RM" << menu[i].price << endl;
-    cout << string(42, '-') << endl;
+void displayMenu() {
+  cout << right << setw(34) << "========== MENU ==========" << endl;
+  cout << left << setw(5) << "ID" << setw(16) << "Item" << setw(16)
+       << "Category" << "Price" << endl;
+  cout << string(42, '-') << endl;
+  for (int i = 0; i < menu.size(); i++)
+    cout << left << setw(5) << menu[i].id << setw(16) << menu[i].name
+         << setw(16) << menu[i].category << fixed << setprecision(2) << "RM"
+         << menu[i].price << endl;
+  cout << string(42, '-') << endl;
 }
 
-void addToCart(vector<MenuItem> menu, vector<CartItem> &cart){
-	displayMenu();
+void viewCart(const vector<CartItem> &cart);
+
+void addToCart(vector<MenuItem> menu, vector<CartItem> &cart) {
+  char addMore = 'Y';
+
+  while (addMore == 'Y' || addMore == 'y') {
+    displayMenu();
+
     int id;
     int quantity;
-    cout << "Enter Item ID: ";
-    cin >> id;
-    cout << "Enter Quantity: ";
-    cin >> quantity;
-
-    if(quantity <= 0){
-        cout << "Invalid quantity! Please try again." << endl;
-        return;
-        }
-    else if(quantity > 100){ 
-        cout << "Quantity exceeds limit! Please try again." << endl;
-        return;
-  }
-
     bool found = false;
-    for (int i = 0; i < menu.size(); i++){
-        if (menu[i].id == id){
-            found = true;
-            CartItem newItem = {menu[i], quantity, menu[i].price * quantity};
-            cart.push_back(newItem);
-            cout << "Item added to cart." << endl;
-            break;
-            }
-        }
-    if (!found)
-        cout << "There is no such item! Please try again." << endl;
-}
 
-void viewCart(const vector<CartItem> &cart){
-    if(cart.empty()){
-        cout << "Cart is empty." << endl;
+    
+    while (!found) {
+      cout << "Enter Item ID (0 to cancel): ";
+      cin >> id;
+
+      if (id == 0) {
+        cout << "Returning to main menu..." << endl;
         return;
-  }
-  
-  cout << right << setw(34) << "========== CART ==========" << endl;
-  cout << left << setw(5) << "ID" << setw(16) << "Item" << setw(16) << "Quantity"<< "Total Price" << endl;
-  cout << string(42, '-') << endl;
+      }
 
-  double grandTotal = 0;
-  for (int i = 0; i < cart.size(); i++){
-    cout << left << setw(5) << cart[i].order.id << setw(16) << cart[i].order.name << setw(16) << cart[i].quantity << fixed << setprecision(2) << "RM" << cart[i].totalPrice << endl;
-    grandTotal += cart[i].totalPrice;
-  }
-    cout << string(42, '-') << endl;
-    cout << "Grand Total: RM" << grandTotal << endl;
-    cout << string(42, '-') << endl;
+      for (int i = 0; i < menu.size(); i++) {
+        if (menu[i].id == id) {
+          found = true;
+          break;
+        }
+      }
 
+      if (!found)
+        cout << "There is no such item! Please try again." << endl;
+    }
+
+    
+    found = false;
+    while (!found) {
+      cout << "Enter Quantity: ";
+      cin >> quantity;
+
+      if (quantity <= 0)
+        cout << "Invalid quantity! Please try again." << endl;
+      else if (quantity > 100)
+        cout << "Quantity exceeds limit! Please try again." << endl;
+      else
+        found = true;
+    }
+
+    
+    for (int i = 0; i < menu.size(); i++) {
+      if (menu[i].id == id) {
+        CartItem NewItem = {menu[i], quantity, menu[i].price * quantity};
+        cart.push_back(NewItem);
+        cout << menu[i].name << " x" << quantity << " added to cart." << endl;
+        break;
+      }
+    }
+
+    cout << "\n";
+    viewCart(cart);
+    cout << "\n";
+
+    found = false;
+    while (!found) {
+      cout << "Add more items? (Y/N): ";
+      cin >> addMore;
+        
+      if (addMore == 'N' || addMore == 'n' || 
+          addMore == 'Y' || addMore == 'y') {
+        found = true;
+      } else {
+        cout << "Invalid choice. Please try again." << endl;
+      }
+    }
+  }
+    cout << "\n";
 }
 
-void removeFromCart(vector<CartItem> &cart){
-  if(cart.empty()){
+void viewCart(const vector<CartItem> &cart) {
+  if (cart.empty()) {
     cout << "Cart is empty." << endl;
     return;
   }
 
+  cout << right << setw(34) << "========== CART ==========" << endl;
+  cout << left << setw(5) << "ID" << setw(16) << "Item" << setw(16)
+       << "Quantity" << "Total Price" << endl;
+  cout << string(42, '-') << endl;
+
+  double Total = 0;
+  for (int i = 0; i < cart.size(); i++) {
+    cout << left << setw(5) << cart[i].order.id << setw(16)
+         << cart[i].order.name << setw(16) << cart[i].quantity << fixed
+         << setprecision(2) << "RM" << cart[i].totalPrice << endl;
+    Total += cart[i].totalPrice;
+  }
+  cout << string(42, '-') << endl;
+  cout << "Total (excl. tax): RM" << Total << endl;
+  cout << string(42, '-') << endl;
+}
+
+void removeFromCart(vector<CartItem> &cart) {
+  if (cart.empty()) {
+    cout << "Cart is empty." << endl;
+    return;
+  }
+  bool found = false;
+  viewCart(cart);
+    cout << "\n";
+  while (!found){  
   int id;
   int quantity;
   cout << "Enter Item ID to remove: ";
   cin >> id;
-  cout << "Enter quantity to remove: ";
-  cin >> quantity;
 
-  bool found = false;
-  for(auto j = cart.begin(); j != cart.end(); j++){
-    if(j->order.id == id){
+ 
+  for (auto j = cart.begin(); j != cart.end(); j++) {
+    if (j->order.id == id) {
       found = true;
-      if(j->quantity > quantity){
+      while (found){
+      cout << "Enter quantity to remove: ";
+      cin >> quantity;
+      if (j->quantity > quantity) {
         j->quantity -= quantity;
         j->totalPrice = j->order.price * j->quantity;
         cout << "Item quantity updated." << endl;
-      }
-      else if(j->quantity < quantity){
+        break;
+      } else if (j->quantity < quantity || j->quantity < 0) {
         cout << "Invalid quantity. Please try again." << endl;
-        return;
-      }
-      else
+      } else
         cart.erase(j);
       cout << "Item removed from cart." << endl;
       break;
+      }
     }
     if (!found)
       cout << "Item not found. Please try again." << endl;
   }
+  }
 }
 
-void DineOption(){
+void DineOption() {
   int option;
-  cout << right << setw(34) << "Please choose your option: \n";
-  cout << right << setw(23) << "1. Dine In" << endl;
-  cout << right << setw(25) << "2. Take Away\n" << endl;
+  cout << "Please choose your option: \n";
+  cout << "1. Dine In" << endl;
+  cout << "2. Take Away\n" << endl;
   cout << "\nEnter your option: ";
   cin >> option;
-  if(option == 1)
+  if (option == 1)
     cout << "\nYou have chosen Dine In.\n" << endl;
-  else if(option == 2)
+  else if (option == 2)
     cout << "\nYou have chosen Take Away.\n" << endl;
   else
     cout << "\nNo such option. Please try again.\n" << endl;
   return;
 }
 
-int main(){
-    int choice = 0;
-    while (choice != 6){
+int main() {
+  int choice = 0;
+  while (choice != 6) {
     mainMenu();
-        cout << "Enter your choice: ";
-        cin >> choice;
-        cout << "\n";
-        switch (choice){
-        case 1:
-            DineOption();
-            break;
-        case 2:
-            displayMenu();
-            break;
-        case 3:
-            addToCart(menu, cart);
-            break;
-        case 4:
-            viewCart(cart);
-            break;
-        case 5:
-            removeFromCart(cart);
-            break;
-        case 6:
-            break;
-        case 7:
-			cout << "Thank you for using our Restaurant Management System." << endl;
-			break;
-		default:
-            cout << "\nInvalid choice. Please try again.\n\n";
-        }
+    cout << "Enter your choice: ";
+    cin >> choice;
+    cout << "\n";
+    switch (choice) {
+    case 1:
+      DineOption();
+      break;
+    case 2:
+      displayMenu();
+      break;
+    case 3:
+      addToCart(menu, cart);
+      break;
+    case 4:
+      viewCart(cart);
+      break;
+    case 5:
+      removeFromCart(cart);
+      break;
+    case 6:
+      break;
+    case 7:
+      cout << "Thank you for using our Restaurant Management System." << endl;
+      break;
+    default:
+      cout << "\nInvalid choice. Please try again.\n\n";
     }
+  }
 }
