@@ -5,35 +5,37 @@
 
 using namespace std;
 
-struct MenuItem {
-  int id;
-  double price;
-  string name, category;
+struct MenuItem{
+    int id;
+    double price;
+    string name, category;
 };
 
-struct CartItem {
-  MenuItem order;
-  int quantity;
-  double totalPrice;
+struct CartItem{
+    MenuItem order;
+    int quantity;
+    double totalPrice;
 };
 
 vector<MenuItem> menu = {
-    {1, 2.0, "Roti Canai", "Main"},   {2, 3.0, "Nasi Lemak", "Main"},
-    {3, 5.0, "Nasi Briyani", "Main"}, {4, 2.2, "Teh O", "Drink"},
+    {1, 2.0, "Roti Canai", "Main"},   
+    {2, 3.0, "Nasi Lemak", "Main"},
+    {3, 5.0, "Nasi Briyani", "Main"}, 
+    {4, 2.2, "Teh O", "Drink"},
     {5, 2.0, "Kopi O", "Drink"},
 };
 
 vector<CartItem> cart;
 
-void mainMenu() {
-  cout << "\n===== Welcome to Restaurant Management System =====\n\n";
-  cout << "1. Dine Option" << endl;
-  cout << "2. View Menu" << endl;
-  cout << "3. Add Item to Cart" << endl;
-  cout << "4. View Cart" << endl;
-  cout << "5. Remove Item from Cart" << endl;
-  cout << "6. Checkout" << endl;
-  cout << "7. Exit\n" << endl;
+void mainMenu(){
+    cout << "\n===== Welcome to Restaurant Management System =====\n\n";
+    cout << "1. Dine Option" << endl;
+    cout << "2. View Menu" << endl;
+    cout << "3. Add Item to Cart" << endl;
+    cout << "4. View Cart" << endl;
+    cout << "5. Remove Item from Cart" << endl;
+    cout << "6. Checkout" << endl;
+    cout << "7. Exit\n" << endl;
 }
 
 void displayMenu() {
@@ -125,10 +127,10 @@ void addToCart(vector<MenuItem> menu, vector<CartItem> &cart) {
     cout << "\n";
 }
 
-void viewCart(const vector<CartItem> &cart) {
-  if (cart.empty()) {
-    cout << "Cart is empty." << endl;
-    return;
+void viewCart(const vector<CartItem> &cart){
+    if(cart.empty()){
+        cout << "Cart is empty." << endl;
+        return;
   }
 
   cout << right << setw(34) << "========== CART ==========" << endl;
@@ -148,8 +150,8 @@ void viewCart(const vector<CartItem> &cart) {
   cout << string(42, '-') << endl;
 }
 
-void removeFromCart(vector<CartItem> &cart) {
-  if (cart.empty()) {
+void removeFromCart(vector<CartItem> &cart){
+  if(cart.empty()){
     cout << "Cart is empty." << endl;
     return;
   }
