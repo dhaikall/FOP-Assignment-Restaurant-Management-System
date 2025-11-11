@@ -21,8 +21,10 @@ struct CartItem {
 };
 
 vector<MenuItem> menu = {
-    {1, 2.0, "Roti Canai", "Main"},   {2, 3.0, "Nasi Lemak", "Main"},
-    {3, 5.0, "Nasi Briyani", "Main"}, {4, 2.2, "Teh O", "Drink"},
+    {1, 2.0, "Roti Canai", "Main"},   
+    {2, 3.0, "Nasi Lemak", "Main"},
+    {3, 5.0, "Nasi Briyani", "Main"},
+    {4, 2.2, "Teh O", "Drink"},
     {5, 2.0, "Kopi O", "Drink"},
 };
 
@@ -316,3 +318,4 @@ int main() {
     }
   }
 }
+
